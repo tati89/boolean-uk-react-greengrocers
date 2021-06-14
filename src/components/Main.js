@@ -1,6 +1,3 @@
-import CartItem from "./CartItem";
-import StoreItem from "./StoreItem";
-
 function Main({
   store,
   cart,
@@ -18,23 +15,43 @@ function Main({
       <header id="store">
         <h1>Greengrocers</h1>
         <ul className="item-list store--item-list">
-          {store.map((item, index) => (
-            <StoreItem item={item} addItemToCart={addItemToCart} key={index} />
-          ))}
+          {store.map((item, index) => {
+            <li>
+              <div className="store--item-icon">
+                <img src={`assets/icons/${item.id}.svg`} alt={item.name} />
+              </div>
+              <button onClick={() => addItemToCart(item)}>Add to cart</button>
+            </li>;
+          })}
         </ul>
       </header>
       <main id="cart">
         <h2>Your Cart</h2>
         <div className="cart--item-list-container">
           <ul className="item-list cart--item-list">
-            {cart.map((item, index) => (
-              <CartItem
-                key={index}
-                item={item}
-                decreaseQuantity={decreaseQuantity}
-                increaseQuantity={increaseQuantity}
-              />
-            ))}
+            {cart.map((item, index) => {
+              <li>
+                <img
+                  className="cart--item-icon"
+                  src={`assets/icons/${item.id}.svg`}
+                  alt={item.name}
+                />
+                <p>{item.name}</p>
+                <button
+                  className="quantity-btn remove-btn center"
+                  onClick={(e) => decreaseQuantity(item)}
+                >
+                  -
+                </button>
+                <span className="quantity-text center">{item.quantity}</span>
+                <button
+                  className="quantity-btn add-btn center"
+                  onClick={() => increaseQuantity(item)}
+                >
+                  +
+                </button>
+              </li>;
+            })}
           </ul>
         </div>
         <div className="total-section">
