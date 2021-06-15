@@ -21,12 +21,16 @@ export default function App() {
     fetch("http://localhost:4000/groceries")
       .then((response) => response.json())
       .then((groceriesFromServer) => setStore(groceriesFromServer));
+
+    fetch("http://localhost:4000/cart")
+      .then((response) => response.json())
+      .then((cart) => setCart(cart));
   }, []);
 
   const addItemToCart = (clickedItem) => {
     const foundInCart = cart.find((item) => clickedItem.id === item.id);
     if (foundInCart) {
-      increaseQuantity(clickedItem); //NOT WORKING...
+      increaseQuantity(foundInCart);
     } else {
       fetch("http://localhost:4000/cart", {
         method: "POST",
@@ -55,7 +59,9 @@ export default function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quantity: clickedItem.quantity + 1 }),
+      body: JSON.stringify({
+        quantity: clickedItem.quantity + 1,
+      }),
     })
       .then((response) => {
         return response.json();
